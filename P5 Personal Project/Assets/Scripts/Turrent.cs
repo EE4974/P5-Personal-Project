@@ -5,11 +5,12 @@ using UnityEngine;
 public class Turrent : MonoBehaviour
 {
     private Transform target;
+    public bool hasPowerUp;
 
     [Header("Attributes")]
     public float range = 15;
-    public float fireRate = 1f;
-    private float fireCountdown = 0f;
+    public static float fireRate = 1f;
+    public float fireCountdown = 0f;
 
     [Header("Unity Setup Fields")]
     public string enemeyTag = "Enemy";
@@ -60,7 +61,7 @@ public class Turrent : MonoBehaviour
             Shoot();
             fireCountdown = 1f / fireRate;
         }
-
+       
         fireCountdown -= Time.deltaTime;
     }
 
@@ -68,14 +69,37 @@ public class Turrent : MonoBehaviour
     {
         GameObject fireballGo = (GameObject)Instantiate (fireballPrefab, firePoint.position, firePoint.rotation);
         Fireball fireball = fireballGo.GetComponent<Fireball>();
-
         if (fireball != null)
             fireball.Seek(target);
     }
+
     void OnDrawGizmosSelected ()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
+    }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Powerup"))
+        {
+           Pickup();
+           StartCoroutine(PowerupCountdownRoutine());
+        }
+    }
+
+    void Pickup()
+    {
+    hasPowerUp  = true;
+    Destroy(GameObject.FindWithTag("Powerup"));
+    Debug.Log ("E");
+    fireRate = 5;
+    range = 20;
+    }
+
+    IEnumerator PowerupCountdownRoutine()
+    {
+        yield return new WaitForSeconds(10);
+        hasPowerUp = false;
     }
 }

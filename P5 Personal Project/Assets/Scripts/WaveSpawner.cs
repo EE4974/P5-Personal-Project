@@ -15,9 +15,10 @@ public class WaveSpawner : MonoBehaviour
     {
         
     }
-
+   
     void Update()
     {
+        
         if (countdown <= 0f)
         {
             StartCoroutine(SpawnWave());
@@ -25,6 +26,7 @@ public class WaveSpawner : MonoBehaviour
         }
         countdown -= Time.deltaTime;
         waveCountdownText.text = Mathf.Round(countdown).ToString();
+        
     }
 
     IEnumerator SpawnWave ()

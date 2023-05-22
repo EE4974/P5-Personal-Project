@@ -32,6 +32,8 @@ public class Fireball : MonoBehaviour
     }
     void HitTarget ()
     {
-        Debug.Log ("Hit");
+        Destroy(gameObject);
+        Destroy(target.gameObject);
     }
+   
 }
