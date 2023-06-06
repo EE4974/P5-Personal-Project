@@ -2,16 +2,22 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-   public float speed = 10.0f;
+   public float speed = 11.0f;
     // Start is called before the first frame update
     void Start()
     {
-        speed = 10.0f;
+        speed = 11.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.gameOver)
+        {
+            this.enabled = false;
+            return;
+        }
+
         if (Input.GetKey(KeyCode.W))
         {
             transform.Translate(-1 * Vector3.forward * Time.deltaTime * speed);

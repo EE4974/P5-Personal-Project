@@ -6,6 +6,7 @@ public class Turrent : MonoBehaviour
 {
     private Transform target;
     public bool hasPowerUp;
+    public GameObject powerupIndicator;
 
     [Header("Attributes")]
     public float range = 15;
@@ -63,6 +64,7 @@ public class Turrent : MonoBehaviour
         }
        
         fireCountdown -= Time.deltaTime;
+        
     }
 
     void Shoot ()
@@ -85,21 +87,26 @@ public class Turrent : MonoBehaviour
         {
            Pickup();
            StartCoroutine(PowerupCountdownRoutine());
+           powerupIndicator.gameObject.SetActive(true);
+           Destroy(other.gameObject);
         }
     }
 
+    //powerup buff
     void Pickup()
     {
-    hasPowerUp  = true;
-    Destroy(GameObject.FindWithTag("Powerup"));
-    Debug.Log ("E");
+    hasPowerUp = true;
     fireRate = 5;
     range = 20;
     }
 
+    //powerup goes away
     IEnumerator PowerupCountdownRoutine()
     {
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(6);
         hasPowerUp = false;
+        powerupIndicator.gameObject.SetActive(false);
+        fireRate = 1;
+        range = 15;
     }
 }
